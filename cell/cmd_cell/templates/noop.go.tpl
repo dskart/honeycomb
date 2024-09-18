@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
 	"{{.GoModulePath}}/app"
 	"{{.GoModulePath}}/pkg/shutdown"
@@ -18,9 +17,14 @@ var noopCmd = &cobra.Command{
 	Use:   "noop",
 	Short: "noop",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		_, cancel := context.WithCancel(context.Background())
+		ctx, cancel := context.WithCancel(context.Background())
 		shutdown.OnShutdown(cancel)
 
+		app, err := app.New(ctx, rootLogger, rootConfig.App)
+		if err != nil {
+			return err
+		}
+		session := app.NewSession(rootLogger).WithContext(ctx)
 		session.Logger().Info("Hello World!")
 
 		return nil

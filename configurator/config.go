@@ -57,7 +57,9 @@ func fillDefaultConfigValues(cfg HoneycombConfig) (HoneycombConfig, error) {
 	}
 
 	if cfg.GoVersion == "" {
-		cfg.GoVersion = runtime.Version()
+		goVersion := runtime.Version()
+		goVersion = strings.TrimPrefix(goVersion, "go")
+		cfg.GoVersion = goVersion
 	}
 
 	if cfg.CfgEnvPrefix == "" {
