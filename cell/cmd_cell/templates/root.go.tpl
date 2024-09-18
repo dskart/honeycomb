@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"{{.ModuleName}}/pkg/config"
-	"{{.ModuleName}}/pkg/logger"
-	"{{.ModuleName}}/pkg/shutdown"
+	"{{.GoModulePath}}/pkg/config"
+	"{{.GoModulePath}}/pkg/logger"
+	"{{.GoModulePath}}/pkg/shutdown"
 
 	awsCfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"

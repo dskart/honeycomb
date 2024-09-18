@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"{{.ModuleName}}/app"
+	"{{.GoModulePath}}/app"
 )
 
 const cfgEnvPrefix = "{{.CfgEnvPrefix}}"

@@ -4,38 +4,37 @@ import (
 	"context"
 	"fmt"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/dskart/honeycomb/cell"
 	"github.com/dskart/honeycomb/configurator"
 	"github.com/dskart/honeycomb/pkg/shutdown"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	rootCmd.AddCommand(genHtmlCmd)
+	rootCmd.AddCommand(initCmd)
 }
 
-var genHtmlCmd = &cobra.Command{
+var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "initialize a new honeycomb project",
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		_, cancel := context.WithCancel(context.Background())
 		shutdown.OnShutdown(cancel)
 
-		p := tea.NewProgram(configurator.NewTeaModel())
-		model, err := p.Run()
-		if err != nil {
-			return fmt.Errorf("failed running tea program: %w", err)
+		projectPath := "."
+		if len(args) > 0 {
+			projectPath = args[0]
 		}
-
-		cfg, err := model.(configurator.TeaModel).GetHoneyCombConfig()
+		cfg, err := configurator.New(projectPath)
 		if err != nil {
-			return fmt.Errorf("failed getting honeycomb config: %w", err)
+			return err
 		}
 
 		fmt.Printf("cfg is: %+v\n", cfg)
-		// if err := cell.BuildAllCells(*cfg); err != nil {
-		// 	return err
-		// }
+		if err := cell.BuildAllCells(cfg); err != nil {
+			return err
+		}
 		return nil
 	},
 }

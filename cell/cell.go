@@ -2,9 +2,7 @@ package cell
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
-	"strings"
 
 	appcell "github.com/dskart/honeycomb/cell/app_cell"
 	cmdcell "github.com/dskart/honeycomb/cell/cmd_cell"
@@ -22,9 +20,8 @@ func New() (*App, error) {
 func BuildAllCells(cfg configurator.HoneycombConfig) error {
 	projectPath := cfg.ProjectPath
 
-	err := os.MkdirAll(projectPath, os.ModePerm)
-	if err != nil {
-		return err
+	if err := initProjectDir(projectPath); err != nil {
+		return fmt.Errorf("failed to initialize project directory: %w", err)
 	}
 
 	if err := cmdcell.Build(cfg, projectPath); err != nil {
@@ -48,11 +45,6 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 	}
 
 	return nil
-}
-
-func getProjectName(moduleName string) string {
-	splitStr := strings.Split(moduleName, "/")
-	return splitStr[len(splitStr)-1]
 }
 
 func runGoModTidy(projectPath string) error {

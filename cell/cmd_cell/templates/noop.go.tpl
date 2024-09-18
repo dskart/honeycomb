@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"{{.ModuleName}}/app"
-	"{{.ModuleName}}/pkg/shutdown"
+	"{{.GoModulePath}}/app"
+	"{{.GoModulePath}}/pkg/shutdown"
 
 	"github.com/spf13/cobra"
 )

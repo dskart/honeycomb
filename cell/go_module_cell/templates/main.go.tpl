@@ -1,7 +1,7 @@
 package main
 
 import (
-	"{{.ModuleName}}/cmd"
+	"{{.GoModulePath}}/cmd"
 )
 
 func main() {

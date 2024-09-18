@@ -1,3 +1,3 @@
-module {{.ModuleName}}
+module {{.GoModulePath}}
 
 go {{.GoVersion}}
