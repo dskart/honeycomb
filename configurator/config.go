@@ -16,6 +16,8 @@ type HoneycombConfig struct {
 	ProjectName  string `toml:"project_name"`
 	GoVersion    string `toml:"go_version"`
 	CfgEnvPrefix string `toml:"cfg_env_prefix"`
+
+	Store *StoreConfig `toml:"store"`
 }
 
 func New(projectPath string) (HoneycombConfig, error) {

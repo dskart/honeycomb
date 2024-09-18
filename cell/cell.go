@@ -8,7 +8,9 @@ import (
 	cmdcell "github.com/dskart/honeycomb/cell/cmd_cell"
 	gitcell "github.com/dskart/honeycomb/cell/git_cell"
 	gomodulecell "github.com/dskart/honeycomb/cell/go_module_cell"
+	modelcell "github.com/dskart/honeycomb/cell/model_cell"
 	pkgcell "github.com/dskart/honeycomb/cell/pkg_cell"
+	storecell "github.com/dskart/honeycomb/cell/store_cell"
 	"github.com/dskart/honeycomb/configurator"
 )
 
@@ -35,6 +37,14 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 
 	if err := appcell.Build(cfg, projectPath); err != nil {
 		return fmt.Errorf("failed to build app cell: %w", err)
+	}
+
+	if err := modelcell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build model cell: %w", err)
+	}
+
+	if err := storecell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build store cell: %w", err)
 	}
 
 	if err := gomodulecell.Build(cfg, projectPath); err != nil {

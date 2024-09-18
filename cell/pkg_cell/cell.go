@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	configcell "github.com/dskart/honeycomb/cell/pkg_cell/config_cell"
+	errorscell "github.com/dskart/honeycomb/cell/pkg_cell/errors_cell"
 	loggercell "github.com/dskart/honeycomb/cell/pkg_cell/logger_cell"
 	shutdowncell "github.com/dskart/honeycomb/cell/pkg_cell/shutdown_cell"
 	"github.com/dskart/honeycomb/configurator"
@@ -19,6 +20,10 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 
 	err := os.MkdirAll(cellPath, os.ModePerm)
 	if err != nil {
+		return err
+	}
+
+	if err := errorscell.Build(cfg, cellPath); err != nil {
 		return err
 	}
 

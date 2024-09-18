@@ -17,6 +17,9 @@ shopt -u dotglob
 # Create new file with specified name and content
 cat << EOF > "$DIR/honeycomb.toml"
 go_module_path = "github.com/foo/bar"
+
+[store]
+type = "keyvaluestore"
 EOF
 
 go run main.go init .tmp
