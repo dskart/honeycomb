@@ -12,6 +12,7 @@ import (
 const (
 	dirPath = "cmd"
 
+	mainFileName   = "main.go"
 	rootFileName   = "root.go"
 	configFileName = "config.go"
 	noopFileName   = "noop.go"
@@ -19,6 +20,7 @@ const (
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 	cellPath := filepath.Join(parentDir, dirPath)
+	mainGoPath := filepath.Join(parentDir, ".")
 	err := os.MkdirAll(cellPath, os.ModePerm)
 	if err != nil {
 		return err
@@ -42,6 +44,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		{
 			TemplateName: noopFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, noopFileName),
+			Data:         cfg,
+		},
+		{
+			TemplateName: mainFileName + ".tpl",
+			DestPath:     filepath.Join(mainGoPath, mainFileName),
 			Data:         cfg,
 		},
 	}

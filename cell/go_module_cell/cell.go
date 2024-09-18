@@ -12,7 +12,6 @@ const (
 	dirPath = "."
 
 	goModFileName = "go.mod"
-	mainFileName  = "main.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -26,11 +25,6 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		{
 			TemplateName: goModFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, goModFileName),
-			Data:         cfg,
-		},
-		{
-			TemplateName: mainFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, mainFileName),
 			Data:         cfg,
 		},
 	}
