@@ -13,6 +13,7 @@ import (
 	makefilecell "github.com/dskart/honeycomb/cell/makefile_cell"
 	modelcell "github.com/dskart/honeycomb/cell/model_cell"
 	pkgcell "github.com/dskart/honeycomb/cell/pkg_cell"
+	readmecell "github.com/dskart/honeycomb/cell/readme_cell"
 	storecell "github.com/dskart/honeycomb/cell/store_cell"
 	uicell "github.com/dskart/honeycomb/cell/ui_cell"
 	"github.com/dskart/honeycomb/configurator"
@@ -49,6 +50,10 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 
 	if err := makefilecell.Build(cfg, projectPath); err != nil {
 		return fmt.Errorf("failed to build makefile cell: %w", err)
+	}
+
+	if err := readmecell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build readme cell: %w", err)
 	}
 
 	if err := cmdcell.Build(cfg, projectPath); err != nil {
