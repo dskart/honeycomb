@@ -50,6 +50,10 @@ func (cfg HoneycombConfig) Validate() error {
 		return fmt.Errorf("go_module_path is required")
 	}
 
+	if cfg.Ui != nil && cfg.Store == nil {
+		return fmt.Errorf("store config is required when ui config is present")
+	}
+
 	return nil
 }
 

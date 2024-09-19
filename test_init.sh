@@ -17,11 +17,13 @@ shopt -u dotglob
 # Copy the content from honeycomb_default.toml
 cp honeycomb_default.toml "$DIR_NAME/honeycomb.toml"
 
-go run main.go init $DIR_NAME
+if ! go run main.go init $DIR_NAME; then
+  exit 1
+fi
 
 pushd $DIR_NAME
 
-make bin
-make ui
+# make bin
+# make ui
 
 popd

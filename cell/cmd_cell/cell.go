@@ -51,11 +51,14 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 			DestPath:     filepath.Join(mainGoPath, mainFileName),
 			Data:         cfg,
 		},
-		{
+	}
+
+	if cfg.Ui != nil {
+		cellTemplates = append(cellTemplates, cellbuilder.CellTemplate{
 			TemplateName: serveFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, serveFileName),
 			Data:         cfg,
-		},
+		})
 	}
 
 	if err := cellbuilder.BuildCell(tmpls, cellTemplates); err != nil {
