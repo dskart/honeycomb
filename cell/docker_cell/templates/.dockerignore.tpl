@@ -1,6 +1,8 @@
 .git
 .gitignore
 .tmp
+config.yml
+{{.ProjectName}}
 Makefile
 README.md
 
