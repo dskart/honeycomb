@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/dskart/honeycomb/compare/v0.1.1...v0.1.2) (2024-09-19)
+
+
+### Features
+
+* added goreleaser ([1dde39a](https://github.com/dskart/honeycomb/commit/1dde39ae88c15e175c4724cf969b058be5389e87))
+
 ## [0.1.1](https://github.com/dskart/honeycomb/compare/v0.1.0...v0.1.1) (2024-09-19)
 
 
