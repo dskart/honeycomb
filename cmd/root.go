@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
+	"strings"
 	"syscall"
 
 	"github.com/dskart/honeycomb/pkg/logger"
@@ -17,6 +17,13 @@ import (
 //go:embed banner.txt
 var bannerArt string
 
+//go:embed version.md
+var versionFile string
+
+func version() string {
+	return strings.Split(versionFile, " ")[1]
+}
+
 func init() {
 	rootLogger, _ = logger.NewLogger(false)
 
@@ -27,7 +34,8 @@ func init() {
 var rootLogger *zap.Logger
 
 var rootCmd = &cobra.Command{
-	Use:           filepath.Base(os.Args[0]),
+	Use:           "honeycomb",
+	Version:       version(),
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
