@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/dskart/honeycomb/cell"
 	"github.com/dskart/honeycomb/configurator"
@@ -26,15 +25,20 @@ var initCmd = &cobra.Command{
 		if len(args) > 0 {
 			projectPath = args[0]
 		}
+
+		rootLogger.Sugar().Info("loading project configuration...")
 		cfg, err := configurator.New(projectPath)
 		if err != nil {
 			return err
 		}
+		rootLogger.Sugar().Info("configuration loaded!")
 
-		fmt.Printf("cfg is: %+v\n", cfg)
+		rootLogger.Sugar().Info("building project cells...")
 		if err := cell.BuildAllCells(cfg); err != nil {
 			return err
 		}
+		rootLogger.Sugar().Info("project cells built!")
+
 		return nil
 	},
 }

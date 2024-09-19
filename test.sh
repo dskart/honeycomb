@@ -1,27 +1,22 @@
 #!/bin/bash
 
-# Set your target directory path here
-DIR=".tmp"
+DIR_NAME="bar"
 
-# Safety check - if the dir does not exist, then exit
-if [ ! -d "$DIR" ]; then
-  echo "Directory $DIR does not exist."
-  exit 1
+# Check if the dir exists, if not then create it
+if [ ! -d "$DIR_NAME" ]; then
+  echo "Directory $DIR_NAME does not exist."
+  echo "Creating directory $DIR_NAME"
+  mkdir -p "$DIR_NAME"
 fi
 
+# Clear the directory
 shopt -s dotglob
-rm -rf "$DIR"/*
+rm -rf "$DIR_NAME"/*
 shopt -u dotglob
 
+# Copy the content from honeycomb_default.toml
+cp honeycomb_default.toml "$DIR_NAME/honeycomb.toml"
 
-# Create new file with specified name and content
-cat << EOF > "$DIR/honeycomb.toml"
-go_module_path = "github.com/foo/bar"
+go run main.go init $DIR_NAME
 
-[store]
-type = "keyvaluestore"
-EOF
-
-go run main.go init .tmp
-
-cd .tmp && go run main.go noop
+cd $DIR_NAME && go run main.go noop

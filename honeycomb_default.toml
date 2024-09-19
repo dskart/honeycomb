@@ -1,0 +1,4 @@
+go_module_path = "github.com/foo/bar"
+
+[store]
+type = "keyvaluestore"
