@@ -3,18 +3,29 @@ package app
 import (
 	"context"
 
+	{{- if .Store}}
+	"{{.GoModulePath}}/store"
+	{{- end}}
+
 	"go.uber.org/zap"
+	"github.com/google/uuid"
 )
 
 type Session struct {
 	app     *App
 	context context.Context
 	logger  *zap.Logger
+	{{- if .Store}}
+	store   *store.Store
+	{{- end}}
 }
 
 func (a *App) NewSession(logger *zap.Logger) *Session {
 	return &Session{
 		app:     a,
+		{{- if .Store}}
+		store: a.store,
+		{{- end}}
 		context: context.Background(),
 		logger:  logger,
 	}
@@ -37,4 +48,8 @@ func (s Session) WithLogger(logger *zap.Logger) *Session {
 func (s *Session) Logger() *zap.Logger {
 	logger := s.logger
 	return logger
+}
+
+func (s *Session) UserId() uuid.UUID {
+	return uuid.Nil
 }

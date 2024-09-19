@@ -19,7 +19,7 @@ type TestModelType struct {
 
 func NewTestModelType(foo string, bar int) TestModelType {
 	return TestModelType{
-		Model: model.NewModel(),
+		Model: model.NewModel(uuid.Nil),
 		Foo:   foo,
 		Bar:   bar,
 	}

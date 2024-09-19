@@ -16,6 +16,7 @@ const (
 	rootFileName   = "root.go"
 	configFileName = "config.go"
 	noopFileName   = "noop.go"
+	serveFileName  = "serve.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -48,6 +49,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		{
 			TemplateName: mainFileName + ".tpl",
 			DestPath:     filepath.Join(mainGoPath, mainFileName),
+			Data:         cfg,
+		},
+		{
+			TemplateName: serveFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, serveFileName),
 			Data:         cfg,
 		},
 	}

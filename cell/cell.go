@@ -10,6 +10,7 @@ import (
 	dockercell "github.com/dskart/honeycomb/cell/docker_cell"
 	gitcell "github.com/dskart/honeycomb/cell/git_cell"
 	gomodulecell "github.com/dskart/honeycomb/cell/go_module_cell"
+	makefilecell "github.com/dskart/honeycomb/cell/makefile_cell"
 	modelcell "github.com/dskart/honeycomb/cell/model_cell"
 	pkgcell "github.com/dskart/honeycomb/cell/pkg_cell"
 	storecell "github.com/dskart/honeycomb/cell/store_cell"
@@ -44,6 +45,10 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 
 	if err := dockercell.Build(cfg, projectPath); err != nil {
 		return fmt.Errorf("failed to build docker cell: %w", err)
+	}
+
+	if err := makefilecell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build makefile cell: %w", err)
 	}
 
 	if err := cmdcell.Build(cfg, projectPath); err != nil {

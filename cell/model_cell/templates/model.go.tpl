@@ -11,9 +11,10 @@ type Model struct {
 	CreationTime   time.Time
 	RevisionNumber int
 	RevisionTime   time.Time
+	RevisionUserId uuid.UUID
 }
 
-func NewModel() Model {
+func NewModel(revisionUserId uuid.UUID) Model {
 	var model Model
 	model.Id = uuid.New()
 	model.CreationTime = time.Now()
@@ -21,3 +22,4 @@ func NewModel() Model {
 	model.RevisionTime = model.CreationTime
 	return model
 }
+

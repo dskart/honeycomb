@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	_ "github.com/a-h/templ"
 
 	"{{.GoModulePath}}/app"
 	"{{.GoModulePath}}/ui/pkg/middleware"

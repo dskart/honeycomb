@@ -19,4 +19,9 @@ cp honeycomb_default.toml "$DIR_NAME/honeycomb.toml"
 
 go run main.go init $DIR_NAME
 
-cd $DIR_NAME && go run main.go noop
+pushd $DIR_NAME
+
+make bin
+make ui
+
+popd

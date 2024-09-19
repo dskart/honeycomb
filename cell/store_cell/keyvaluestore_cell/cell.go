@@ -18,6 +18,7 @@ const (
 	patchFileName       = "patch.go"
 	patchTestFileName   = "patch_test.go"
 	serializerFileName  = "serializer.go"
+	todoFileName        = "todo.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -60,6 +61,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		{
 			TemplateName: serializerFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, serializerFileName),
+			Data:         cfg,
+		},
+		{
+			TemplateName: todoFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, todoFileName),
 			Data:         cfg,
 		},
 	}

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 	"reflect"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -139,6 +140,7 @@ func (s Store) WithProfiler(profiler interface{}) *Store {
 	return &s
 }
 
+//lint:ignore U1000 placeholder helper function from template
 func (s *Store) getByIds(key string, dest interface{}, serializer Serializer, ids ...uuid.UUID) error {
 	batch := s.backend.Batch()
 	gets := make([]keyvaluestore.GetResult, 0, len(ids))
@@ -169,6 +171,7 @@ func (s *Store) getByIds(key string, dest interface{}, serializer Serializer, id
 	return nil
 }
 
+//lint:ignore U1000 placeholder helper function from template
 func stringsToIds(s []string) []uuid.UUID {
 	ret := make([]uuid.UUID, len(s))
 	for i, id := range s {
@@ -184,4 +187,9 @@ func execAtomicWrite(op keyvaluestore.AtomicWriteOperation) (bool, error) {
 		return false, ErrContention
 	}
 	return ok, err
+}
+
+//lint:ignore U1000 placeholder helper function from template
+func timeMicrosecondScore(t time.Time) float64 {
+	return float64(t.Unix()*1000000 + int64(t.Nanosecond()/1000))
 }

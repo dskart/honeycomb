@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"{{.GoModulePath}}/app"
-	uiErrors "{{.GoModulePath}}/ui/pkg/errors"
+	uiErrors "{{.GoModulePath}}/pkg/errors"
 
 	"go.uber.org/zap"
 )
@@ -28,7 +28,6 @@ const MaxRequestBytes int64 = 20 * 1024 * 1024
 
 type SessionMiddleware interface {
 	AnonymousSession(next http.Handler) http.Handler
-	UserSession(next http.Handler) http.Handler
 }
 
 // Define our struct
@@ -38,14 +37,10 @@ type sessionMiddleware struct {
 }
 
 func (sm *sessionMiddleware) AnonymousSession(f http.Handler) http.Handler {
-	return sm.createSession(false, f)
+	return sm.createSession(f)
 }
 
-func (sm *sessionMiddleware) UserSession(f http.Handler) http.Handler {
-	return sm.createSession(true, f)
-}
-
-func (sm *sessionMiddleware) createSession(requireUser bool, f http.Handler) http.Handler {
+func (sm *sessionMiddleware) createSession(f http.Handler) http.Handler {
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		beginTime := time.Now()
 		session := sm.app.NewSession(sm.app.Logger()).WithContext(r.Context())
@@ -80,8 +75,7 @@ func (sm *sessionMiddleware) createSession(requireUser bool, f http.Handler) htt
 				zap.Uint32("status_code", uint32(statusCode)),
 			)
 			url := *r.URL
-			// Scrub query values. The only thing we use query values for is access tokens, which
-			// are sensitive.
+			// Scrub query values
 			url.RawQuery = ""
 			logger.Info(r.Method + " " + url.RequestURI())
 		}()
@@ -94,40 +88,6 @@ func (sm *sessionMiddleware) createSession(requireUser bool, f http.Handler) htt
 		}()
 
 		r.Body = http.MaxBytesReader(w, r.Body, MaxRequestBytes)
-
-		secretString := ""
-		if auth := r.Header.Get("Authorization"); strings.HasPrefix(auth, "token ") {
-			secretString = strings.TrimPrefix(auth, "token ")
-		}
-
-		if secretString != "" {
-			secret, err := base64.RawURLEncoding.DecodeString(secretString)
-			if err != nil {
-				http.Error(w, "malformed authorization token", http.StatusBadRequest)
-				return
-			}
-			if newSession, err := session.WithAccessTokenSecret(secret); err != nil {
-				http.Error(w, err.Error(), uiErrors.ErrorHTTPStatus(err))
-				return
-			} else if newSession != nil {
-				session = newSession
-			} else {
-				http.Error(w, "invalid credentials", http.StatusUnauthorized)
-				return
-			}
-		}
-
-		if requireUser && session.User() == nil {
-			http.Error(w, "access denied", http.StatusUnauthorized)
-			return
-		}
-
-		if session.User() != nil {
-			session = session.WithLogger(session.Logger().With(
-				zap.String("userid", session.User().Id.String()),
-				zap.String("userEmail", session.User().EmailAddress),
-			))
-		}
 
 		r = r.WithContext(context.WithValue(r.Context(), sessionContextKey, session))
 		f.ServeHTTP(w, r)

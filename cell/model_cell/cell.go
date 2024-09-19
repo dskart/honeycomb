@@ -12,6 +12,7 @@ const (
 	dirPath = "model"
 
 	modelFileName = "model.go"
+	todoFileName  = "todo.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -30,6 +31,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 			DestPath:     filepath.Join(cellPath, modelFileName),
 			Data:         cfg,
 		},
+		{
+			TemplateName: todoFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, todoFileName),
+			Data:         cfg,
+		},
 	}
 
 	if err := cellbuilder.BuildCell(tmpls, templates); err != nil {
@@ -40,8 +46,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 }
 
 func needModelCell(cfg configurator.HoneycombConfig) bool {
-	//lint:ignore S1008 this will have more values later
 	if cfg.Store != nil {
+		return true
+	}
+
+	if cfg.Ui != nil {
 		return true
 	}
 

@@ -11,9 +11,11 @@ import (
 const (
 	dirPath = "app"
 
-	appFileName     = "app.go"
-	configFileName  = "config.go"
-	sessionFileName = "session.go"
+	appFileName           = "app.go"
+	configFileName        = "config.go"
+	sessionFileName       = "session.go"
+	sessionErrorsFileName = "session_error.go"
+	todoFileName          = "todo.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -38,6 +40,19 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 			DestPath:     filepath.Join(cellPath, sessionFileName),
 			Data:         cfg,
 		},
+		{
+			TemplateName: sessionErrorsFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, sessionErrorsFileName),
+			Data:         cfg,
+		},
+	}
+
+	if cfg.Store != nil {
+		templates = append(templates, cellbuilder.CellTemplate{
+			TemplateName: todoFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, todoFileName),
+			Data:         cfg,
+		})
 	}
 
 	if err := cellbuilder.BuildCell(tmpls, templates); err != nil {

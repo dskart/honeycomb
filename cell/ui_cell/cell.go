@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 
 	cellbuilder "github.com/dskart/honeycomb/cell/cell_builder"
+	componentscell "github.com/dskart/honeycomb/cell/ui_cell/components_cell"
+	pagescell "github.com/dskart/honeycomb/cell/ui_cell/pages_cell"
 	pkgcell "github.com/dskart/honeycomb/cell/ui_cell/pkg_cell"
 	"github.com/dskart/honeycomb/configurator"
 )
@@ -20,6 +22,8 @@ const (
 	tailwindConfigFileName = "tailwind.config.js"
 	routesFileName         = "routes.go"
 	uiFileName             = "ui.go"
+
+	airFileName = ".air.toml"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -37,6 +41,11 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 	}
 
 	cellTemplates := []cellbuilder.CellTemplate{
+		{
+			TemplateName: airFileName + ".tpl",
+			DestPath:     filepath.Join(parentDir, airFileName),
+			Data:         cfg,
+		},
 		{
 			TemplateName: gitignoreFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, gitignoreFileName),
@@ -84,6 +93,14 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 	}
 
 	if err := pkgcell.Build(cfg, cellPath); err != nil {
+		return err
+	}
+
+	if err := pagescell.Build(cfg, cellPath); err != nil {
+		return err
+	}
+
+	if err := componentscell.Build(cfg, cellPath); err != nil {
 		return err
 	}
 
