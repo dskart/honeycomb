@@ -62,3 +62,28 @@ jobs:
           git tag -a v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }} -m "Release v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }}"
           git push origin v${{ needs.release.outputs.major }}
           git push origin v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }}
+
+  release-bins:
+    name: Release Bins
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+          - goarch: arm64
+            goos: windows
+    steps:
+    - uses: actions/checkout@v3
+    - uses: wangyoucao577/go-release-action@v1
+      with:
+        overwrite: yes
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        goversion: "1.22"
+        release_tag: ${{ needs.release.outputs.tag_name }}
+        md5sum: false
+        asset_name: honeycomb-${{ matrix.goos }}-${{ matrix.goarch }}
