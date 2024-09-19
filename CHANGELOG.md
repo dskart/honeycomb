@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/dskart/honeycomb/compare/v0.1.2...v0.1.3) (2024-09-19)
+
+
+### Features
+
+* disable changelog for .goreleaser ([797807e](https://github.com/dskart/honeycomb/commit/797807e5f836cb9d59273688f9df87976621c70d))
+
 ## [0.1.2](https://github.com/dskart/honeycomb/compare/v0.1.1...v0.1.2) (2024-09-19)
 
 
