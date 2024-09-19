@@ -16,3 +16,14 @@ func ErrorHTTPStatus(err error) int {
 		return http.StatusInternalServerError
 	}
 }
+
+type StatusCodeRecorder struct {
+	http.ResponseWriter
+	http.Hijacker
+	StatusCode int
+}
+
+func (r *StatusCodeRecorder) WriteHeader(statusCode int) {
+	r.StatusCode = statusCode
+	r.ResponseWriter.WriteHeader(statusCode)
+}

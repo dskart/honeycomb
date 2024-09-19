@@ -1,4 +1,4 @@
-package dockercell
+package routercell
 
 import (
 	"os"
@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	dirPath = "."
+	dirPath = "router"
 
-	dockerFileName        = "Dockerfile"
-	dockerIgnoreFileName  = ".dockerignore"
-	dockerComposeFileName = "docker-compose.yml"
+	componentRouterFileName = "component_router.go"
+	handleFuncFileName      = "handle_func.go"
+	pageRouterFileName      = "page_router.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -24,18 +24,18 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 
 	cellTemplates := []cellbuilder.CellTemplate{
 		{
-			TemplateName: dockerFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, dockerFileName),
+			TemplateName: componentRouterFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, componentRouterFileName),
 			Data:         cfg,
 		},
 		{
-			TemplateName: dockerIgnoreFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, dockerIgnoreFileName),
+			TemplateName: handleFuncFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, handleFuncFileName),
 			Data:         cfg,
 		},
 		{
-			TemplateName: dockerComposeFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, dockerComposeFileName),
+			TemplateName: pageRouterFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, pageRouterFileName),
 			Data:         cfg,
 		},
 	}

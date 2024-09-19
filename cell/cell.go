@@ -13,6 +13,7 @@ import (
 	modelcell "github.com/dskart/honeycomb/cell/model_cell"
 	pkgcell "github.com/dskart/honeycomb/cell/pkg_cell"
 	storecell "github.com/dskart/honeycomb/cell/store_cell"
+	uicell "github.com/dskart/honeycomb/cell/ui_cell"
 	"github.com/dskart/honeycomb/configurator"
 )
 
@@ -29,8 +30,12 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 		return fmt.Errorf("failed to initialize project directory: %w", err)
 	}
 
-	if err := cmdcell.Build(cfg, projectPath); err != nil {
-		return fmt.Errorf("failed to build cmd cell: %w", err)
+	if err := gomodulecell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build go_module cell: %w", err)
+	}
+
+	if err := gitcell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build git cell: %w", err)
 	}
 
 	if err := configcell.Build(cfg, projectPath); err != nil {
@@ -39,6 +44,10 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 
 	if err := dockercell.Build(cfg, projectPath); err != nil {
 		return fmt.Errorf("failed to build docker cell: %w", err)
+	}
+
+	if err := cmdcell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build cmd cell: %w", err)
 	}
 
 	if err := pkgcell.Build(cfg, projectPath); err != nil {
@@ -57,12 +66,8 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 		return fmt.Errorf("failed to build store cell: %w", err)
 	}
 
-	if err := gomodulecell.Build(cfg, projectPath); err != nil {
-		return fmt.Errorf("failed to build go_module cell: %w", err)
-	}
-
-	if err := gitcell.Build(cfg, projectPath); err != nil {
-		return fmt.Errorf("failed to build git cell: %w", err)
+	if err := uicell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build ui cell: %w", err)
 	}
 
 	if err := runGoModTidy(projectPath); err != nil {

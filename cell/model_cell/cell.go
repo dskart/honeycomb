@@ -20,8 +20,7 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 	}
 
 	cellPath := filepath.Join(parentDir, dirPath)
-	err := os.MkdirAll(cellPath, os.ModePerm)
-	if err != nil {
+	if err := os.MkdirAll(cellPath, os.ModePerm); err != nil {
 		return err
 	}
 

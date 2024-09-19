@@ -2,3 +2,6 @@ go_module_path = "github.com/foo/bar"
 
 [store]
 type = "keyvaluestore"
+
+[ui]
+node_version = "v22.8.0"

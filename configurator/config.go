@@ -18,6 +18,7 @@ type HoneycombConfig struct {
 	CfgEnvPrefix string `toml:"cfg_env_prefix"`
 
 	Store *StoreConfig `toml:"store"`
+	Ui    *UiConfig    `toml:"ui"`
 }
 
 func New(projectPath string) (HoneycombConfig, error) {

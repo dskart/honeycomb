@@ -1,4 +1,4 @@
-package appcell
+package middlewarecell
 
 import (
 	"os"
@@ -9,10 +9,8 @@ import (
 )
 
 const (
-	dirPath = "app"
+	dirPath = "middleware"
 
-	appFileName     = "app.go"
-	configFileName  = "config.go"
 	sessionFileName = "session.go"
 )
 
@@ -22,17 +20,7 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		return err
 	}
 
-	templates := []cellbuilder.CellTemplate{
-		{
-			TemplateName: appFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, appFileName),
-			Data:         cfg,
-		},
-		{
-			TemplateName: configFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, configFileName),
-			Data:         cfg,
-		},
+	cellTemplates := []cellbuilder.CellTemplate{
 		{
 			TemplateName: sessionFileName + ".tpl",
 			DestPath:     filepath.Join(cellPath, sessionFileName),
@@ -40,7 +28,7 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		},
 	}
 
-	if err := cellbuilder.BuildCell(tmpls, templates); err != nil {
+	if err := cellbuilder.BuildCell(tmpls, cellTemplates); err != nil {
 		return err
 	}
 
