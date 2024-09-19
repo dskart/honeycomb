@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/dskart/honeycomb/compare/v0.1.0...v0.1.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* fix windows logger and version in cmd ([d952cb1](https://github.com/dskart/honeycomb/commit/d952cb17fbdd0ef25ad4a4790c8c1e299778e80f))
+
 ## 0.1.0 (2024-09-19)
 
 
