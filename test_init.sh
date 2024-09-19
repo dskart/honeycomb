@@ -23,7 +23,7 @@ fi
 
 pushd $DIR_NAME
 
-# make bin
-# make ui
+make bin
+make ui
 
 popd
