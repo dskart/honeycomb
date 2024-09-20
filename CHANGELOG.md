@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.4](https://github.com/dskart/honeycomb/compare/v0.1.3...v0.1.4) (2024-09-20)
+
+
+### Features
+
+* added api cell ([490a17c](https://github.com/dskart/honeycomb/commit/490a17c625acb568b7955cb6c3691c8ac66d5643))
+
+
+### Bug Fixes
+
+* remove apidocs.swagger.json for test ([bf08271](https://github.com/dskart/honeycomb/commit/bf0827168b4a50422824b30a1de0efe6c586156c))
+
 ## [0.1.3](https://github.com/dskart/honeycomb/compare/v0.1.2...v0.1.3) (2024-09-19)
 
 
