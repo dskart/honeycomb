@@ -26,4 +26,7 @@ pushd $DIR_NAME
 make bin
 make ui
 
+buf mod update api/proto 
+buf generate
+
 popd

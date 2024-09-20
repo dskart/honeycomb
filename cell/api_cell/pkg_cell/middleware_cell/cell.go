@@ -1,4 +1,4 @@
-package gomodulecell
+package middlewarecell
 
 import (
 	"os"
@@ -9,32 +9,33 @@ import (
 )
 
 const (
-	dirPath = "."
+	dirPath = "middleware"
 
-	goModFileName = "go.mod"
-	toolsFileName = "tools.go"
+	recoveryFileName = "recovery.go"
+	sessionFileName  = "session.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
+
 	cellPath := filepath.Join(parentDir, dirPath)
 	if err := os.MkdirAll(cellPath, os.ModePerm); err != nil {
 		return err
 	}
 
-	templates := []cellbuilder.CellTemplate{
+	cellTemplates := []cellbuilder.CellTemplate{
 		{
-			TemplateName: goModFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, goModFileName),
+			TemplateName: recoveryFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, recoveryFileName),
 			Data:         cfg,
 		},
 		{
-			TemplateName: toolsFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, toolsFileName),
+			TemplateName: sessionFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, sessionFileName),
 			Data:         cfg,
 		},
 	}
 
-	if err := cellbuilder.BuildCell(tmpls, templates); err != nil {
+	if err := cellbuilder.BuildCell(tmpls, cellTemplates); err != nil {
 		return err
 	}
 

@@ -1,4 +1,4 @@
-package gomodulecell
+package cmdcell
 
 import (
 	"os"
@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	dirPath = "."
+	dirPath = "cmd"
 
-	goModFileName = "go.mod"
-	toolsFileName = "tools.go"
+	mergeSwaggerFileName = "merge_swagger.go"
+	rootFileName         = "root.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -23,13 +23,13 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 
 	templates := []cellbuilder.CellTemplate{
 		{
-			TemplateName: goModFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, goModFileName),
+			TemplateName: mergeSwaggerFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, mergeSwaggerFileName),
 			Data:         cfg,
 		},
 		{
-			TemplateName: toolsFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, toolsFileName),
+			TemplateName: rootFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, rootFileName),
 			Data:         cfg,
 		},
 	}

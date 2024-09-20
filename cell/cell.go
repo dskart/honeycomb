@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os/exec"
 
+	apicell "github.com/dskart/honeycomb/cell/api_cell"
 	appcell "github.com/dskart/honeycomb/cell/app_cell"
 	cmdcell "github.com/dskart/honeycomb/cell/cmd_cell"
 	configcell "github.com/dskart/honeycomb/cell/config_cell"
@@ -76,6 +77,10 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 		return fmt.Errorf("failed to build store cell: %w", err)
 	}
 
+	if err := apicell.Build(cfg, projectPath); err != nil {
+		return fmt.Errorf("failed to build api cell: %w", err)
+	}
+
 	if err := uicell.Build(cfg, projectPath); err != nil {
 		return fmt.Errorf("failed to build ui cell: %w", err)
 	}
@@ -90,8 +95,9 @@ func BuildAllCells(cfg configurator.HoneycombConfig) error {
 func runGoModTidy(projectPath string) error {
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Dir = projectPath
-	if err := cmd.Run(); err != nil {
-		return err
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%s", output)
 	}
 	return nil
 }

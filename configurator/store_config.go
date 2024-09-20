@@ -3,23 +3,18 @@ package configurator
 import "fmt"
 
 type StoreConfig struct {
-	Type StoreType `toml:"type"`
+	Type string `toml:"type"`
 }
 
-type StoreType string
-
-func (st *StoreType) UnmarshalText(text []byte) error {
-	v := string(text)
-
-	if !IsStoreTypeValid(v) {
-		return fmt.Errorf("invalid store type: %s", v)
+func (sc *StoreConfig) Validate() error {
+	if !isStoreTypeValid(string(sc.Type)) {
+		return fmt.Errorf("invalid store type: %s", sc.Type)
 	}
 
-	*st = StoreType(v)
 	return nil
 }
 
-func IsStoreTypeValid(storeType string) bool {
+func isStoreTypeValid(storeType string) bool {
 	switch storeType {
 	case "keyvaluestore":
 		return true

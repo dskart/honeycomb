@@ -5,3 +5,7 @@ type = "keyvaluestore"
 
 [ui]
 node_version = "v22.8.0"
+
+[api]
+type = "grpc-gateway"
+buf_account_name = "foo"

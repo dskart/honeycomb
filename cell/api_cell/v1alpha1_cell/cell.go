@@ -1,4 +1,4 @@
-package gomodulecell
+package v1alpha1cell
 
 import (
 	"os"
@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	dirPath = "."
+	dirPath = "v1alpha1"
 
-	goModFileName = "go.mod"
-	toolsFileName = "tools.go"
+	apiFileName    = "api.go"
+	configFileName = "config.go"
 )
 
 func Build(cfg configurator.HoneycombConfig, parentDir string) error {
@@ -21,20 +21,20 @@ func Build(cfg configurator.HoneycombConfig, parentDir string) error {
 		return err
 	}
 
-	templates := []cellbuilder.CellTemplate{
+	cellTemplates := []cellbuilder.CellTemplate{
 		{
-			TemplateName: goModFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, goModFileName),
+			TemplateName: apiFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, apiFileName),
 			Data:         cfg,
 		},
 		{
-			TemplateName: toolsFileName + ".tpl",
-			DestPath:     filepath.Join(cellPath, toolsFileName),
+			TemplateName: configFileName + ".tpl",
+			DestPath:     filepath.Join(cellPath, configFileName),
 			Data:         cfg,
 		},
 	}
 
-	if err := cellbuilder.BuildCell(tmpls, templates); err != nil {
+	if err := cellbuilder.BuildCell(tmpls, cellTemplates); err != nil {
 		return err
 	}
 

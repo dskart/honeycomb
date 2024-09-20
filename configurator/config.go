@@ -18,6 +18,7 @@ type HoneycombConfig struct {
 	CfgEnvPrefix string `toml:"cfg_env_prefix"`
 
 	Store *StoreConfig `toml:"store"`
+	Api   *ApiConfig   `toml:"api"`
 	Ui    *UiConfig    `toml:"ui"`
 }
 
@@ -50,8 +51,26 @@ func (cfg HoneycombConfig) Validate() error {
 		return fmt.Errorf("go_module_path is required")
 	}
 
-	if cfg.Ui != nil && cfg.Store == nil {
-		return fmt.Errorf("store config is required when ui config is present")
+	if cfg.Api != nil {
+		if err := cfg.Api.Validate(); err != nil {
+			return fmt.Errorf("api config is invalid: %w", err)
+		}
+	}
+
+	if cfg.Store != nil {
+		if err := cfg.Store.Validate(); err != nil {
+			return fmt.Errorf("store config is invalid: %w", err)
+		}
+	}
+
+	if cfg.Ui != nil {
+		if err := cfg.Ui.Validate(); err != nil {
+			return fmt.Errorf("ui config is invalid: %w", err)
+		}
+
+		if cfg.Store == nil {
+			return fmt.Errorf("store config is required for ui config")
+		}
 	}
 
 	return nil
